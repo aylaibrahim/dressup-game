@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dress Up Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="controls-left">
+            <div class="control-item">
+                <button onclick="nextTop()">Next Top</button>
+                <button class="remove-btn" onclick="removeTop()">X</button>
+            </div>
+            <div class="control-item">
+                <button onclick="nextBottom()">Next Bottom</button>
+                <button class="remove-btn" onclick="removeBottom()">X</button>
+            </div>
+            <div class="control-item">
+                <button onclick="nextHair()">Next Hair</button>
+                <button class="remove-btn" onclick="removeHair()">X</button>
+            </div>
+        </div>
+
+        <div class="character-container">
+            <div class="skin"></div>
+            <div class="hair"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+            <div class="eyes"></div>
+            <div class="shoes"></div>
+        </div>
+
+        <div class="controls-right">
+            <div class="control-item">
+                <button onclick="nextEyes()">Next Eyes</button>
+                <button class="remove-btn" onclick="removeEyes()">X</button>
+            </div>
+            <div class="control-item">
+                <button onclick="nextShoes()">Next Shoes</button>
+                <button class="remove-btn" onclick="removeShoes()">X</button>
+            </div>
+            <div class="control-item">
+                <button onclick="nextSkin()">Next Skin Color</button>
+                <button class="remove-btn" onclick="removeSkin()">X</button>
+            </div>
+            <button onclick="resetCharacter()">Reset</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
