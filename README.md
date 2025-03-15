@@ -13,6 +13,6 @@ Current To-do list:
 
 <img width="1470" alt="outfit 1" src="https://github.com/user-attachments/assets/1c769f51-4612-494e-a519-5ebf7855f521" />
 <img width="1470" alt="outfit 2" src="https://github.com/user-attachments/assets/6721a177-96b3-46a3-b994-1c48440ebbd7" />
-<img width="1470" alt="outfit 3" src="https://github.com/user-attachments/assets/12cd656e-c58a-4578-9b3a-3acc67ceeec9" />
+<img width="1470" alt="outfit 3" src="https://github.com/user-attachments/assets/de8c08e6-d066-496e-b49a-795f8445fede" />
 
 This site was built and hosted by [Github Pages](https://aylaibrahim.github.io/dressup-game/)
