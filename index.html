@@ -5,50 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dress Up Game</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        @font-face {
+            font-family: 'TheFont';
+            src: url("https://garet.typeforward.com/assets/fonts/shared/TFMixVF.woff2") format('woff2');
+        }
+
+        #start-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        #game-title {
+            font-family: 'TheFont', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: rgb(255, 255, 255);
+            text-shadow: #794564 0 0 30px;
+            animation: letter-breathe 5s ease-in-out infinite;
+            margin-bottom: 30px;
+        }
+
+        @keyframes letter-breathe {
+            0%, 100% {
+                font-variation-settings: 'wght' 100;
+            }
+            50% {
+                font-variation-settings: 'wght' 900;
+            }
+        }
+
+        #start-button {
+            font-size: 24px;
+            padding: 10px 30px;
+            background-color: rgb(206, 166, 189);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Sigmar', cursive;
+            transition: all 0.3s ease;
+            box-shadow: #794564 0 0 30px;
+        }
+
+        #start-button:hover {
+            background-color: #eec2cf;
+            box-shadow: #eec2cf 0 0 30px;
+            transform: scale(1.05);
+        }
+
+        .main-wrapper {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="controls-left">
-            <div class="control-item">
-                <button onclick="nextTop()">Next Top</button>
-                <button class="remove-btn" onclick="removeTop()">X</button>
+    <div id="start-screen">
+        <span id="game-title">Dress Up Game</span>
+        <button id="start-button">start</button>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="game-container">
+            <div class="controls-left">
+                <div class="control-item">
+                    <button onclick="nextTop()">next top</button>
+                    <button class="remove-btn" onclick="removeTop()">x</button>
+                </div>
+
+                <div class="control-item">
+                    <button onclick="nextBottom()">next bottom</button>
+                    <button class="remove-btn" onclick="removeBottom()">x</button>
+                </div>
+
+                <div class="control-item">
+                    <button onclick="nextHair()">next hair</button>
+                    <button class="remove-btn" onclick="removeHair()">x</button>
+                </div>
+            </div>            
+
+            <div class="character-container">
+                <div class="skin"></div>
+                <div class="hair"></div>
+                <div class="top"></div>
+                <div class="bottom"></div>
+                <div class="eyes"></div>
+                <div class="shoes"></div>
             </div>
-            <div class="control-item">
-                <button onclick="nextBottom()">Next Bottom</button>
-                <button class="remove-btn" onclick="removeBottom()">X</button>
-            </div>
-            <div class="control-item">
-                <button onclick="nextHair()">Next Hair</button>
-                <button class="remove-btn" onclick="removeHair()">X</button>
-            </div>
+
+            <div class="controls-right">
+                <div class="control-item">
+                    <button onclick="nextEyes()">next eyes</button>
+                    <button class="remove-btn" onclick="removeEyes()">x</button>
+                </div>
+
+                <div class="control-item">
+                    <button onclick="nextShoes()">next shoes</button>
+                    <button class="remove-btn" onclick="removeShoes()">x</button>
+                </div>
+
+                <div class="control-item">
+                    <button onclick="nextSkin()">next skin tone</button>
+                    <button class="remove-btn" onclick="removeSkin()">x</button>
+                </div>
+            </div>            
         </div>
 
-        <div class="character-container">
-            <div class="skin"></div>
-            <div class="hair"></div>
-            <div class="top"></div>
-            <div class="bottom"></div>
-            <div class="eyes"></div>
-            <div class="shoes"></div>
-        </div>
-
-        <div class="controls-right">
-            <div class="control-item">
-                <button onclick="nextEyes()">Next Eyes</button>
-                <button class="remove-btn" onclick="removeEyes()">X</button>
-            </div>
-            <div class="control-item">
-                <button onclick="nextShoes()">Next Shoes</button>
-                <button class="remove-btn" onclick="removeShoes()">X</button>
-            </div>
-            <div class="control-item">
-                <button onclick="nextSkin()">Next Skin Color</button>
-                <button class="remove-btn" onclick="removeSkin()">X</button>
-            </div>
-            <button onclick="resetCharacter()">Reset</button>
-        </div>
+        <div class="extras">
+            <button onclick="styleMe()">style me!</button>
+            <button onclick="undo()">undo</button>
+            <button onclick="redo()">redo</button>
+            <button onclick="resetCharacter()">reset</button>
+            <button onclick="saveFavorite()">save favorite</button>
+            <button onclick="loadFavorite()">load favorite</button>
+        </div> 
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        document.getElementById("start-button").addEventListener("click", function () {
+            document.getElementById("start-screen").style.display = "none";
+            document.querySelector(".main-wrapper").style.display = "flex";
+        });
+    </script>
 </body>
 </html>

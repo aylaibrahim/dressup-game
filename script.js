@@ -1,107 +1,131 @@
 const topImages = ['clothes/flowy_top.png', 'clothes/latte_dress.png', 'clothes/emo_top.png'];
 const bottomImages = ['clothes/flowy_pants.png', 'clothes/emo_skirt.png'];
 const hairImages = ['hair/bob_black.png', 'hair/bob_red.png', 'hair/curly_black.png', 'hair/curly_blonde.png'];
-const eyesImages = [];
+const eyesImages = ['eyes/eyes1.png', 'eyes/eyes2.png'];
 const shoesImages = ['clothes/black_flats.png', 'clothes/white_flats.png', 'clothes/grey_flats.png', 'clothes/maryjane_tights.png', 'clothes/emo_shoes.png'];
-const skinColors = ['base/skin_pale.png', 'base/skin_olive.png', 'base/skin_brown.png', 'base/skin_black.png'];
+const skinColors = ['base/skin_pale.png', 'base/skin_tan.png', 'base/skin_brown.png'];
 
-let currentTop = 0;
-let currentBottom = 0;
-let currentHair = 0;
-let currentEyes = 0;
-let currentShoes = 0;
-let currentSkin = 0;
+document.getElementById('start-button').addEventListener('click', () => {
+    document.getElementById('start-screen').style.display = 'none';
+    document.querySelector('.main-wrapper').style.display = 'flex';
+});
 
-window.onload = function() {
-    const hairDiv = document.querySelector('.hair');
-    hairDiv.style.backgroundImage = `url(${hairImages[0]})`;
-    hairDiv.classList.add('visible');
-    currentHair = 0;
-};
+let topIndex = -1, bottomIndex = -1, hairIndex = -1, eyesIndex = -1, shoesIndex = -1, skinIndex = -1;
+let undoStack = [], redoStack = [];
 
-function nextTop() {
-    const topDiv = document.querySelector('.top');
-    currentTop = (currentTop + 1) % topImages.length;
-    topDiv.style.backgroundImage = `url(${topImages[currentTop]})`;
-    topDiv.classList.add('visible');
+function updateCharacter() {
+    const setImage = (selector, images, index) => {
+        const el = document.querySelector(selector);
+        if (index >= 0 && images[index]) {
+            el.style.backgroundImage = `url(${images[index]})`;
+            el.classList.add('visible');
+        } else {
+            el.style.backgroundImage = '';
+            el.classList.remove('visible');
+        }
+    };
+
+    setImage('.top', topImages, topIndex);
+    setImage('.bottom', bottomImages, bottomIndex);
+    setImage('.hair', hairImages, hairIndex);
+    setImage('.eyes', eyesImages, eyesIndex);
+    setImage('.shoes', shoesImages, shoesIndex);
+    setImage('.skin', skinColors, skinIndex);
 }
 
-function removeTop() {
-    const topDiv = document.querySelector('.top');
-    topDiv.style.backgroundImage = '';
-    topDiv.classList.remove('visible');
+
+function saveState() {
+    undoStack.push({
+        topIndex, bottomIndex, hairIndex, eyesIndex, shoesIndex, skinIndex
+    });
+    redoStack = [];
 }
 
-function nextBottom() {
-    const bottomDiv = document.querySelector('.bottom');
-    currentBottom = (currentBottom + 1) % bottomImages.length;
-    bottomDiv.style.backgroundImage = `url(${bottomImages[currentBottom]})`;
-    bottomDiv.classList.add('visible');
+function nextTop() { saveState(); topIndex = (topIndex + 1) % topImages.length; updateCharacter(); }
+function nextBottom() { saveState(); bottomIndex = (bottomIndex + 1) % bottomImages.length; updateCharacter(); }
+function nextHair() { saveState(); hairIndex = (hairIndex + 1) % hairImages.length; updateCharacter(); }
+function nextEyes() { saveState(); eyesIndex = (eyesIndex + 1) % eyesImages.length; updateCharacter(); }
+function nextShoes() { saveState(); shoesIndex = (shoesIndex + 1) % shoesImages.length; updateCharacter(); }
+function nextSkin() { saveState(); skinIndex = (skinIndex + 1) % skinColors.length; updateCharacter(); }
+
+function removeTop() { saveState(); topIndex = 0; updateCharacter(); }
+function removeBottom() { saveState(); bottomIndex = 0; updateCharacter(); }
+function removeHair() { saveState(); hairIndex = 0; updateCharacter(); }
+function removeEyes() { saveState(); eyesIndex = 0; updateCharacter(); }
+function removeShoes() { saveState(); shoesIndex = 0; updateCharacter(); }
+function removeSkin() { saveState(); skinIndex = 0; updateCharacter(); }
+
+function styleMe() {
+    saveState();
+    topIndex = Math.floor(Math.random() * topImages.length);
+    bottomIndex = Math.floor(Math.random() * bottomImages.length);
+    hairIndex = Math.floor(Math.random() * hairImages.length);
+    eyesIndex = Math.floor(Math.random() * eyesImages.length);
+    shoesIndex = Math.floor(Math.random() * shoesImages.length);
+    skinIndex = Math.floor(Math.random() * skinColors.length);
+    updateCharacter();
 }
 
-function removeBottom() {
-    const bottomDiv = document.querySelector('.bottom');
-    bottomDiv.style.backgroundImage = '';
-    bottomDiv.classList.remove('visible');
+function undo() {
+    if (undoStack.length > 0) {
+        redoStack.push({ topIndex, bottomIndex, hairIndex, eyesIndex, shoesIndex, skinIndex });
+        const prev = undoStack.pop();
+        topIndex = prev.topIndex;
+        bottomIndex = prev.bottomIndex;
+        hairIndex = prev.hairIndex;
+        eyesIndex = prev.eyesIndex;
+        shoesIndex = prev.shoesIndex;
+        skinIndex = prev.skinIndex;
+        updateCharacter();
+    }
 }
 
-function nextHair() {
-    const hairDiv = document.querySelector('.hair');
-    currentHair = (currentHair + 1) % hairImages.length;
-    hairDiv.style.backgroundImage = `url(${hairImages[currentHair]})`;
-    hairDiv.classList.add('visible');
+function redo() {
+    if (redoStack.length > 0) {
+        saveState();
+        const next = redoStack.pop();
+        topIndex = next.topIndex;
+        bottomIndex = next.bottomIndex;
+        hairIndex = next.hairIndex;
+        eyesIndex = next.eyesIndex;
+        shoesIndex = next.shoesIndex;
+        skinIndex = next.skinIndex;
+        updateCharacter();
+    }
 }
 
-function removeHair() {
-    const hairDiv = document.querySelector('.hair');
-    hairDiv.style.backgroundImage = '';
-    hairDiv.classList.remove('visible');
+function saveFavorite() {
+    const fav = { topIndex, bottomIndex, hairIndex, eyesIndex, shoesIndex, skinIndex };
+    localStorage.setItem('favOutfit', JSON.stringify(fav));
+    document.querySelector('button[onclick="saveFavorite()"]').classList.add('saving-fav');
+    setTimeout(() => {
+        document.querySelector('button[onclick="saveFavorite()"]').classList.remove('saving-fav');
+    }, 500);
 }
 
-function nextEyes() {
-    const eyesDiv = document.querySelector('.eyes');
-    currentEyes = (currentEyes + 1) % eyesImages.length;
-    eyesDiv.style.backgroundImage = `url(${eyesImages[currentEyes]})`;
-    eyesDiv.classList.add('visible');
+function loadFavorite() {
+    const fav = JSON.parse(localStorage.getItem('favOutfit'));
+    if (fav) {
+        topIndex = fav.topIndex;
+        bottomIndex = fav.bottomIndex;
+        hairIndex = fav.hairIndex;
+        eyesIndex = fav.eyesIndex;
+        shoesIndex = fav.shoesIndex;
+        skinIndex = fav.skinIndex;
+        updateCharacter();
+    }
 }
 
-function removeEyes() {
-    const eyesDiv = document.querySelector('.eyes');
-    eyesDiv.style.backgroundImage = '';
-    eyesDiv.classList.remove('visible');
-}
-
-function nextShoes() {
-    const shoesDiv = document.querySelector('.shoes');
-    currentShoes = (currentShoes + 1) % shoesImages.length;
-    shoesDiv.style.backgroundImage = `url(${shoesImages[currentShoes]})`;
-    shoesDiv.classList.add('visible');
-}
-
-function removeShoes() {
-    const shoesDiv = document.querySelector('.shoes');
-    shoesDiv.style.backgroundImage = '';
-    shoesDiv.classList.remove('visible');
-}
-
-function nextSkin() {
-    const skinDiv = document.querySelector('.skin');
-    currentSkin = (currentSkin + 1) % skinColors.length;
-    skinDiv.style.backgroundImage = `url(${skinColors[currentSkin]})`;
-    skinDiv.classList.add('visible');
-}
-
-function removeSkin() {
-    const skinDiv = document.querySelector('.skin');
-    skinDiv.style.backgroundImage = '';
-    skinDiv.classList.remove('visible');
-}
+updateCharacter();
 
 function resetCharacter() {
-    removeTop();
-    removeBottom();
-    removeHair();
-    removeEyes();
-    removeShoes();
-    removeSkin();
+    saveState();
+    topIndex = -1;
+    bottomIndex = -1;
+    hairIndex = -1;
+    eyesIndex = -1;
+    shoesIndex = -1;
+    skinIndex = -1;
+    updateCharacter();
 }
+

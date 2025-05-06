@@ -2,11 +2,33 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
     overflow: hidden;
+    background-image: url(background2.gif);
+    background-size: fill;
 }
+  
+  #start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    background-image: url('background.png');
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .main-wrapper {
+    display: none;
+
+  }  
+
 
 .game-container {
     display: flex;
@@ -65,7 +87,7 @@ body {
     margin-left: 20px;
 }
 
-.controls-left button, .controls-right button {
+.controls-left button, .controls-right button{
     font-family: 'Ghomu', sans-serif;
     padding: 10px 20px;
     font-size: 18px;
@@ -81,7 +103,8 @@ body {
     color: black;
 }
 
-.remove-btn {
+
+.remove-btn  button {
     background-color: transparent;
     font-size: 20px;
     border: none;
@@ -94,13 +117,11 @@ body {
     color: darkred;
 } */
 
-button:focus {
-    outline: none;
-}
+
 
 .reset-btn {
     margin-top: 20px;
-    background-color: #d3d3d3;
+    background-color: #000000;
     color: black;
 }
 
@@ -130,4 +151,69 @@ button:focus {
 
 .visible {
     opacity: 1;
+}
+
+.carousel {
+    display: flex;
+    overflow-x:visible;
+    gap: 1px;
+    max-width: 200px;
+    margin-bottom: 5px;
+}
+
+.carousel img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel img:hover {
+    transform: scale(1.5);
+}
+
+.extras {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.extras button {
+    margin: 10px;
+    font-size: 16px;
+    background-color: #ebb3e4;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-family: 'Ghomu', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.extras button:hover {
+    background-color: #e491d4;
+    color: white;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+@keyframes heartPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+button.saving-fav {
+    animation: heartPulse 0.5s ease;
 }
